@@ -1,5 +1,5 @@
 import { auth } from './firebase.js';
-import { signInWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js';
+import { signInWithEmailAndPassword, onAuthStateChanged, getIdTokenResult } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js';
 import { showAlert, showLoading, hideLoading } from './utils.js';
 
 const getEl = (id) => document.getElementById(id);
@@ -47,12 +47,12 @@ async function handleLogin(e) {
   try {
     setProcessing(true);
 
-    await signInWithEmailAndPassword(auth, email, password);
+    const credential = await signInWithEmailAndPassword(auth, email, password);
 
     showAlert('Login successful!', 'success');
 
-    // Redirect after successful login
-    window.location.href = 'dashboard.html';
+    const tokenResult = await getIdTokenResult(credential.user);
+    window.location.href = tokenResult.claims.admin === true ? 'admin.html' : 'dashboard.html';
   } catch (err) {
     const msg = err?.message || 'Login failed. Please try again.';
     showAlert(msg, 'error');
@@ -71,9 +71,17 @@ function init() {
 
   // If already logged in, redirect away from login page
   if (['login.html', 'register.html'].includes(window.location.pathname.split('/').pop())) {
-    onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, async (user) => {
       if (!user) return;
-      window.location.href = 'dashboard.html';
+      try {
+        const tokenResult = await getIdTokenResult(user, true);
+        if (auth.currentUser?.uid !== user.uid) return;
+        window.location.href = tokenResult.claims.admin === true ? 'admin.html' : 'dashboard.html';
+      } catch (err) {
+        if (auth.currentUser?.uid !== user.uid) return;
+        console.error('[MathWithMDU] Could not verify signed-in user role:', err);
+        showAlert('Unable to verify your account. Check your connection and try again.', 'error');
+      }
     });
   }
 

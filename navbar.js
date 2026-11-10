@@ -1,5 +1,5 @@
 import { auth, db } from './firebase.js';
-import { onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js';
+import { onAuthStateChanged, signOut, getIdTokenResult } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js';
 import { doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js';
 
 // This file is loaded as an ES module on every page that needs the navbar.
@@ -96,21 +96,26 @@ function initAuthListener() {
       return;
     }
 
-    // Fetch role if available; default to user.
+    // Custom claims are the source of truth for administrator access.
     let role = 'user';
-    let displayName = user.email;
+    let displayName = user.displayName || user.email;
 
     try {
-      const userRef = doc(db, 'users', user.uid);
-      const snap = await getDoc(userRef);
-      if (snap.exists()) {
-        role = snap.data().role || 'user';
-        displayName = snap.data().name || user.email;
+      const tokenResult = await getIdTokenResult(user);
+      role = tokenResult.claims.admin === true ? 'admin' : 'user';
+
+      if (role !== 'admin') {
+        const userRef = doc(db, 'users', user.uid);
+        const snap = await getDoc(userRef);
+        if (snap.exists()) {
+          displayName = snap.data().name || displayName;
+        }
       }
     } catch (err) {
-      console.warn('[MathWithMDU] Role lookup unavailable; using the default user role:', err);
+      console.error('[MathWithMDU] Account details fetch error:', err);
     }
 
+    if (auth.currentUser?.uid !== user.uid) return;
     updateNavbarLoggedIn(authSection, displayName, role);
   });
 }
@@ -151,7 +156,7 @@ function updateNavbarLoggedIn(authSection, name, role) {
   document.querySelectorAll('#registerBtn').forEach(b => b.classList.add('hidden'));
   document.querySelectorAll('#adminBtn').forEach(b => b.classList.toggle('hidden', role !== 'admin'));
   document.querySelectorAll('#logoutBtn').forEach(b => b.classList.remove('hidden'));
-  document.querySelectorAll('#dashboardLink').forEach(b => b.classList.remove('hidden'));
+  document.querySelectorAll('#dashboardLink, #dashboardLinkMobile').forEach(b => b.classList.remove('hidden'));
 
   document.querySelectorAll('.admin-only').forEach(el => {
     el.style.display = role === 'admin' ? 'block' : 'none';
@@ -179,7 +184,7 @@ function updateNavbarLoggedOut(authSection) {
   document.querySelectorAll('#registerBtn').forEach(b => b.classList.remove('hidden'));
   document.querySelectorAll('#adminBtn').forEach(b => b.classList.add('hidden'));
   document.querySelectorAll('#logoutBtn').forEach(b => b.classList.add('hidden'));
-  document.querySelectorAll('#dashboardLink').forEach(b => b.classList.add('hidden'));
+  document.querySelectorAll('#dashboardLink, #dashboardLinkMobile').forEach(b => b.classList.add('hidden'));
 
   document.querySelectorAll('.admin-only').forEach(el => {
     el.style.display = 'none';

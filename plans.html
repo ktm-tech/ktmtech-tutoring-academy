@@ -18,6 +18,8 @@
   <meta name="twitter:title" content="Study plans - KTM Academy" />
   <meta name="twitter:description" content="Compare Bronze, Gold and Premium learning plans for Grade 10–12 Mathematical Literacy." />
   <link rel="stylesheet" href="assets/css/ktm-design-system.css">
+  <script src="icons.js" defer></script>
+  <script src="theme.js" defer></script>
 
   <!-- Favicon + mobile icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo%20-%20blu-ish.png">
@@ -32,7 +34,6 @@
   <script type="module" src="navbar.js" defer></script>
   <script type="module" src="plans.js" defer></script>
 
-  <link rel="stylesheet" href="assets/vendor/font-awesome/all.min.css">
 </head>
 <body>
   <nav class="navbar">
@@ -52,7 +53,7 @@
         <div class="mobile-menu">
           <ul class="nav-links">
             <li><a href="index.html#home">Home</a></li>
-            <li><a href="dashboard.html" id="dashboardLink" class="hidden">Dashboard</a></li>
+            <li><a href="dashboard.html" id="dashboardLinkMobile" class="hidden">Dashboard</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
@@ -74,7 +75,7 @@
 
   <div class="container mdu-page-top">
     <div class="card" style="text-align: center;">
-      <h1 style="color: rgba(255,255,255,0.95);">Choose Your Plan</h1>
+      <h1>Choose Your Plan</h1>
       <p style="opacity: 0.9;">Start with free trial, upgrade for full access</p>
     </div>
 
@@ -94,10 +95,11 @@
           <ul>
             <li>1 available lesson</li>
             <li>1 available practice paper</li>
+            <li>1 available online mock examination</li>
             <li>Access to grade announcements</li>
             <li>Student learning dashboard</li>
           </ul>
-          <button id="trialBtn" class="btn btn-secondary" type="button">Start free access</button>
+          <button id="trialBtn" class="btn btn-secondary" type="button">Start Trial (Register)</button>
         </article>
         <article class="plan-card popular">
           <span class="eyebrow">More room to practise</span>
@@ -106,9 +108,10 @@
           <p class="muted">For students who want a broader collection of resources.</p>
           <ul>
             <li>Full published lesson library</li>
-            <li>Published past papers</li>
+            <li>Published past papers and online mock examinations</li>
             <li>Grade announcements and reminders</li>
-            <li>Learning resources for your registered grade</li>
+            <li>Automatic marking for multiple-choice and numeric questions</li>
+            <li>Teacher-marked written answers and personalised revision insights</li>
           </ul>
           <button class="btn btn-primary payBtn" data-plan="gold" data-amount="25000" type="button">Choose Gold</button>
         </article>
@@ -120,13 +123,12 @@
           <ul>
             <li>Everything included in Gold</li>
             <li>Priority academic support</li>
-            <li>Additional revision resources as published</li>
             <li>Early access to new learning features</li>
           </ul>
           <button class="btn btn-primary payBtn" data-plan="premium" data-amount="40000" type="button">Choose Premium</button>
         </article>
       </div>
-      <p class="muted" style="max-width:850px;margin:1.25rem auto 0;font-size:.85rem;">Online mock examinations, automated marking, personalised recommendations and advanced progress analytics are planned features and are not represented as active benefits until they are released.</p>
+      <p class="muted" style="max-width:850px;margin:1.25rem auto 0;font-size:.85rem;">Mock examinations, automatic objective marking and progress recommendations are available for published assessments. Written responses are marked by a teacher; AI grading is not currently used.</p>
     </section>
     <div class="card" style="margin-top: 2rem; padding: 1.75rem 2rem;">
       <div class="alert info" style="margin-bottom:0;">

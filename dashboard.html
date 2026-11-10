@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Learning dashboard - KTM Academy</title>
-  <meta name="description" content="Student dashboard for KTM Academy: access lessons, past papers, and your announcements based on your plan." />
+  <meta name="description" content="Student dashboard for KTM Academy: access lessons, past papers, mock examinations, and personalised progress insights." />
   <meta name="robots" content="index,follow" />
   <link rel="canonical" href="dashboard.html" />
   <!-- OpenGraph -->
@@ -18,6 +18,9 @@
   <meta name="twitter:title" content="Learning dashboard - KTM Academy" />
   <meta name="twitter:description" content="Access lessons, past papers, and announcements in your KTM Academy student dashboard." />
   <link rel="stylesheet" href="assets/css/ktm-design-system.css">
+  <script src="env.js"></script>
+  <script src="icons.js" defer></script>
+  <script src="theme.js" defer></script>
 
   <!-- Favicon + mobile icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo%20-%20blu-ish.png">
@@ -26,7 +29,6 @@
   <script type="module" src="dashboard.js" defer></script>
   <script type="module" src="navbar.js" defer></script>
 
-  <link rel="stylesheet" href="assets/vendor/font-awesome/all.min.css">
 </head>
 <body class="dashboard-page">
   <nav class="navbar">
@@ -58,7 +60,7 @@
       <div class="menu-overlay"></div>
 
       <div class="auth-btns">
-        <a href="index.html?auth=logout" class="btn btn-primary" style="white-space:nowrap;">Logout</a>
+        <button id="logoutBtn" class="hidden btn btn-secondary" type="button">Logout</button>
       </div>
 
     </div>
@@ -98,10 +100,11 @@
           </div>
         </div>
 
-        <div class="stats-grid" aria-label="Demonstration progress overview">
-          <article class="stat-card"><span>Grade</span><strong>—</strong><small class="muted">Your registered grade</small></article>
-          <article class="stat-card"><span>Learning progress</span><strong>—</strong><small class="muted">Progress tracking preview</small></article>
-          <article class="stat-card"><span>Study plan</span><strong style="font-size:1.2rem;">Your plan</strong><small class="muted">See the badge above</small></article>
+        <div class="stats-grid" aria-label="Your learning space">
+          <article class="stat-card"><span>Your grade</span><strong id="studentGradeStat">—</strong><small class="muted">Registered grade</small></article>
+          <article class="stat-card"><span>Lessons</span><strong id="lessonCountStat">—</strong><small class="muted">Available to your plan</small></article>
+          <article class="stat-card"><span>Practice papers</span><strong id="paperCountStat">—</strong><small class="muted">Available to your plan</small></article>
+          <article class="stat-card"><span>Announcements</span><strong id="announcementCountStat">—</strong><small class="muted">For you and your grade</small></article>
         </div>
       </section>
 
@@ -112,25 +115,48 @@
           <a class="btn btn-primary" href="#lessons">Browse lessons</a>
         </article>
         <article class="section-card" id="progress">
-          <h2>My progress <span class="demo-note">Preview</span></h2>
-          <p class="muted">Progress charts and completed lesson tracking are not connected yet.</p>
-          <div class="progress-track" aria-label="Progress preview"><span style="width:0"></span></div>
+          <h2>My progress</h2>
+          <p id="progressRecommendation" class="muted" aria-live="polite">Complete a mock examination to get a personalised study recommendation.</p>
+          <div class="stats-grid" aria-label="Assessment progress">
+            <div class="stat-card"><span>Assessment average</span><strong id="assessmentAverage">—</strong></div>
+            <div class="stat-card"><span>Completed mocks</span><strong id="assessmentCount">0</strong></div>
+            <div class="stat-card"><span>Topics to revise</span><strong id="revisionTopicCount">—</strong></div>
+          </div>
+          <div id="topicProgress" aria-live="polite"></div>
+          <div id="assessmentHistory" aria-live="polite"></div>
         </article>
       </section>
 
       <section class="section-card" id="learning-centre">
         <h2>Learning centre <span class="demo-note">Mathematical Literacy</span></h2>
-        <p class="muted">Browse available materials by grade, term and topic. Dedicated subject and topic filters are a later-phase feature.</p>
+        <p class="muted" id="learningCentreIntro">Browse the lessons and practice papers available for your registered grade.</p>
       </section>
 
       <section class="section-card" id="subjects">
         <h2>My subjects</h2>
-        <article class="feature-card"><h3>Mathematical Literacy</h3><p>Learning resources for the grade on your account are listed below.</p></article>
+        <article class="feature-card"><h3>Mathematical Literacy</h3><p id="subjectGradeIntro">Your published learning resources are listed below.</p></article>
       </section>
 
       <section class="section-card" id="lessons">
-        <h2>Lessons and study materials</h2>
+        <h2>Lessons and study materials <span id="lessonResultsSummary" class="demo-note" aria-live="polite"></span></h2>
+        <div class="resource-filter-bar">
+          <div class="form-group">
+            <label for="lessonSearch">Search lessons</label>
+            <input id="lessonSearch" type="search" placeholder="Search title, topic or description">
+          </div>
+          <div class="form-group">
+            <label for="lessonTermFilter">Filter by term</label>
+            <select id="lessonTermFilter">
+              <option value="all">All terms</option>
+              <option value="1">Term 1</option>
+              <option value="2">Term 2</option>
+              <option value="3">Term 3</option>
+              <option value="4">Term 4</option>
+            </select>
+          </div>
+        </div>
         <div id="lessonsList" aria-live="polite"></div>
+        <p id="lessonsNoResults" class="empty-state hidden" role="status">No lessons match these filters. Try another search or term.</p>
       </section>
 
       <section class="section-card" id="practice">
@@ -139,18 +165,39 @@
       </section>
 
       <section class="section-card" id="examinations">
-        <h2>Mock examinations <span class="demo-note">Coming soon</span></h2>
-        <p class="muted">Timed online mock examinations, automatic marking and worked solutions are planned for a future release. In the meantime, use the published past papers below to practise.</p>
+        <h2>Mock examinations</h2>
+        <p class="muted">Take a timed or untimed mock. Multiple-choice and numeric questions are marked automatically; written answers are reviewed by your teacher.</p>
+        <div id="examList" aria-live="polite"></div>
+        <div id="examRunner" class="hidden">
+          <div class="dashboard-title-row">
+            <h3 id="activeExamTitle"></h3>
+            <strong id="examTimer" aria-live="polite"></strong>
+          </div>
+          <p id="activeExamInstructions" class="muted"></p>
+          <form id="examAnswerForm">
+            <div id="examQuestionList"></div>
+            <button id="submitExam" class="btn btn-primary" type="submit">Submit examination</button>
+            <button id="cancelExam" class="btn btn-secondary" type="button">Leave examination</button>
+          </form>
+        </div>
+        <div id="examResult" aria-live="polite"></div>
       </section>
 
       <section class="section-card" id="question-bank">
-        <h2>Question bank <span class="demo-note">Coming soon</span></h2>
-        <div class="empty-state"><p>Question-bank content will appear here when the feature is implemented.</p></div>
+        <h2>Question bank</h2>
+        <p class="muted">Questions are currently organised into the mock examinations published for your grade.</p>
       </section>
 
       <section class="section-card" id="papers">
-        <h2>Practice papers</h2>
+        <h2>Practice papers <span id="paperResultsSummary" class="demo-note" aria-live="polite"></span></h2>
+        <div class="resource-filter-bar">
+          <div class="form-group">
+            <label for="paperSearch">Search practice papers</label>
+            <input id="paperSearch" type="search" placeholder="Search title or topic">
+          </div>
+        </div>
         <div id="papersList" aria-live="polite"></div>
+        <p id="papersNoResults" class="empty-state hidden" role="status">No papers match this search. Try another title or topic.</p>
       </section>
 
       <section class="section-card" id="bookmarks">
@@ -167,8 +214,17 @@
         <div class="empty-state"><p>No calendar items are available in this preview.</p></div>
       </section>
       <section class="section-card" id="account">
-        <h2>Account settings <span class="demo-note">Preview</span></h2>
-        <p class="muted">Account management remains available through the existing sign-in and support channels.</p>
+        <h2>Account and plan</h2>
+        <p id="accountSummary" class="muted">Your account and learning access details will appear here.</p>
+        <div class="dashboard-grid">
+          <a class="btn btn-primary" href="plans.html">View learning plans</a>
+          <a class="btn btn-secondary" href="https://wa.me/27637919877" target="_blank" rel="noopener noreferrer">Contact learning support</a>
+        </div>
+        <div class="feature-card">
+          <h3>Administrator access</h3>
+          <p>Administrators can sign in to manage learning resources and announcements.</p>
+          <a class="btn btn-secondary" href="admin.html">Administrator sign in</a>
+        </div>
       </section>
     </div>
   </main>

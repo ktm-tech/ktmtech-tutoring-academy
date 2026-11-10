@@ -21,12 +21,13 @@ const { initFirebaseAdmin } = require('./firebaseAdmin');
 
 function parseArgs(argv) {
   const args = argv.slice(2);
-  if (args.length < 1) return { uid: null, revoke: false };
+  if (args.length < 1 || args.length > 2) return { uid: null, revoke: false };
+  const [uid, option] = args;
+  if (!uid || uid.startsWith('--') || (option && option !== '--revoke')) {
+    return { uid: null, revoke: false };
+  }
 
-  const revoke = args.includes('--revoke');
-  const uid = args.find((a) => a && !a.startsWith('--'));
-
-  return { uid, revoke };
+  return { uid, revoke: option === '--revoke' };
 }
 
 async function main() {
@@ -37,10 +38,13 @@ async function main() {
     process.exit(1);
   }
 
-  const admin = initFirebaseAdmin();
-
   try {
-    const claims = revoke ? { admin: false } : { admin: true };
+    const admin = initFirebaseAdmin();
+    const user = await admin.auth().getUser(uid);
+    const claims = { ...(user.customClaims || {}) };
+
+    if (revoke) delete claims.admin;
+    else claims.admin = true;
 
     await admin.auth().setCustomUserClaims(uid, claims);
 

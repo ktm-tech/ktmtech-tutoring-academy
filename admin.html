@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Administration - KTM Academy</title>
-  <meta name="description" content="Admin panel for KTM Academy: upload lessons, past papers, and post announcements." />
+  <meta name="description" content="Admin panel for KTM Academy: manage lessons, past papers, mock examinations, and announcements." />
   <meta name="robots" content="noindex,follow" />
   <link rel="canonical" href="admin.html" />
   <!-- OpenGraph -->
@@ -19,6 +19,9 @@
   <meta name="twitter:title" content="Administration - KTM Academy" />
   <meta name="twitter:description" content="Manage published learning materials and announcements for KTM Academy." />
   <link rel="stylesheet" href="assets/css/ktm-design-system.css">
+  <script src="env.js"></script>
+  <script src="icons.js" defer></script>
+  <script src="theme.js" defer></script>
 
   <!-- Favicon + mobile icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo%20-%20blu-ish.png">
@@ -30,7 +33,6 @@
 
   <script type="module" src="navbar.js" defer></script>
 
-  <link rel="stylesheet" href="assets/vendor/font-awesome/all.min.css">
 </head>
 
 <body>
@@ -49,7 +51,6 @@
       <ul class="nav-links">
         <li><a href="index.html">Home</a></li>
         <li><a href="contact.html">Contact</a></li>
-        <li><a href="dashboard.html">Student Dashboard</a></li>
       </ul>
       <button class="mobile-nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
         <i class="fa-solid fa-bars" aria-hidden="true"></i>
@@ -59,23 +60,13 @@
         <ul class="nav-links">
           <li><a href="index.html">Home</a></li>
           <li><a href="contact.html">Contact</a></li>
-          <li><a href="dashboard.html">Student Dashboard</a></li>
         </ul>
       </div>
     </div>
-
-    <div class="hamburger">
-      <span></span><span></span><span></span>
-    </div>
-
-    <div class="menu-overlay"></div>
-
     <div class="auth-btns">
-      <span id="adminInfo"></span>
-      <button id="logoutBtn" class="btn btn-secondary hidden">Logout</button>
-
-
+      <button id="adminLogoutBtn" class="btn btn-secondary" type="button">Logout</button>
     </div>
+    <div class="menu-overlay"></div>
 
   </div>
 </nav>
@@ -94,8 +85,8 @@
       <a href="#studentManagement">Students</a>
       <a href="#subscriptionManagement">Subscriptions</a>
       <a href="#lessonManagement">Learning centre</a>
-      <a href="#questionManagement">Question bank</a>
-      <a href="#examinationManagement">Examinations</a>
+      <a href="#examinationManagement">Past papers</a>
+      <a href="#questionManagement">Question bank and examinations</a>
       <a href="#announcementManagement">Notifications</a>
       <a href="#reportManagement">Reports</a>
       <a href="#settingsManagement">Settings</a>
@@ -104,10 +95,10 @@
   <div class="admin-content">
 
 
-  <div id="authSection" class="card">
+  <div id="adminAuthSection" class="card">
     <span class="eyebrow">KTM Academy</span>
     <h1>Administrator sign in</h1>
-    <p>Login with admin email to access</p>
+    <p>Sign in with an administrator account to access this workspace.</p>
     <form id="adminLoginForm">
       <div class="form-group">
         <label for="adminEmail">Admin Email</label>
@@ -119,10 +110,11 @@
         <input type="password" id="adminPassword" placeholder="Password" required />
       </div>
 
-      <button id="adminLogin" class="btn btn-primary" type="button">Admin Login</button>
+      <button id="adminLogin" class="btn btn-primary" type="submit">Admin Login</button>
     </form>
 
     <div id="loginError" class="alert alert-error hidden" role="alert" aria-live="polite"></div>
+    <p class="muted">Need an administrator account? Contact KTM Academy support.</p>
   </div>
 
   <div id="adminSection" class="hidden">
@@ -265,9 +257,61 @@
 
     <!-- ================= FILE UPLOAD ================= -->
     <div id="questionManagement" class="card">
-      <h2>Question bank and examinations <span class="demo-note">Preview</span></h2>
-      <p class="muted">Online question authoring and examination workflows are not connected. Continue using the current past-paper upload form below.</p>
-      <article class="feature-card"><strong>Example question preview</strong><p>Question content and answer options will appear here when the question bank is implemented.</p><span class="demo-note">Preview content only</span></article>
+      <h2>Create a mock examination</h2>
+      <p class="muted">Create typed questions. Choice and numeric answers are marked automatically; written responses are sent to the review queue.</p>
+      <form id="examForm">
+        <div class="form-group">
+          <label for="examTitle">Examination title</label>
+          <input id="examTitle" type="text" maxlength="120" required>
+        </div>
+        <div class="form-group">
+          <label for="examDescription">Instructions</label>
+          <textarea id="examDescription" rows="3" maxlength="1000" required></textarea>
+        </div>
+        <div class="form-group">
+          <label for="examGrade">Grade</label>
+          <select id="examGrade" required>
+            <option value="10">Grade 10</option>
+            <option value="11">Grade 11</option>
+            <option value="12">Grade 12</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="examAccess">Student access</label>
+          <select id="examAccess" required>
+            <option value="free">Free (Bronze)</option>
+            <option value="gold">Gold and Premium</option>
+            <option value="platinum_star">Premium only</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="examDuration">Time limit in minutes (0 for untimed)</label>
+          <input id="examDuration" type="number" min="0" max="240" step="1" value="0" required>
+        </div>
+        <div class="form-group">
+          <label for="examPublished">Publication</label>
+          <select id="examPublished" required>
+            <option value="false">Save as draft</option>
+            <option value="true">Publish now</option>
+          </select>
+        </div>
+        <h3>Questions</h3>
+        <div id="examQuestions"></div>
+        <button id="addExamQuestion" class="btn btn-secondary" type="button">Add question</button>
+        <button class="btn btn-primary" type="submit">Save examination</button>
+      </form>
+
+      <hr>
+      <h3>Review written responses</h3>
+      <p class="muted">Award marks using each question's rubric. Final scores appear in the student's progress report.</p>
+      <div class="form-group">
+        <label for="reviewExamSelect">Examination</label>
+        <select id="reviewExamSelect">
+          <option value="">Select an examination</option>
+        </select>
+      </div>
+      <button id="loadExamReviews" class="btn btn-secondary" type="button">Load responses to review</button>
+      <div id="examReviews" aria-live="polite"></div>
     </div>
 
     <div class="card">

@@ -2,6 +2,7 @@ const crypto = require('crypto');
 const express = require('express');
 const cors = require('cors');
 const { initFirebaseAdmin } = require('./firebaseAdmin');
+const { createExamRouter } = require('./exams');
 const {
   getCustomerEmail,
   getNextPaymentDate,
@@ -339,6 +340,9 @@ app.post('/api/paystack/webhook', express.raw({ type: '*/*' }), async (req, res)
     return res.status(500).send('Webhook processing failed');
   }
 });
+
+app.use(express.json({ limit: '1mb' }));
+app.use('/api/exams', createExamRouter(admin));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

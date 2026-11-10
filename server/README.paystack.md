@@ -2,6 +2,7 @@
 
 ## What it does
 - Exposes `POST /api/paystack/webhook`
+- Exposes authenticated mock-exam start/submit and teacher-review endpoints under `/api/exams`
 - Verifies Paystack webhook signature (`x-paystack-signature`)
 - Activates or renews access only through Paystack subscription events with a provider-supplied
   `next_payment_date`
@@ -72,3 +73,18 @@ applying this migration. Configure bucket CORS for the website origin for SDK-ba
 - Firestore rules deny paid content once `paidAccessUntil` is at or before server request time.
 - A missing provider date on an activation/renewal event is logged and returns HTTP 500 for retry.
 - Subscription lifecycle fields are server-written; clients cannot extend their own paid access.
+
+## Mock examinations
+- Admins create each exam in `admin.html`; public questions are stored in `exams/{examId}` and
+  the private grading key in `examAnswerKeys/{examId}`.
+- Firebase ID tokens are required for exam API requests. The server checks grade, publication,
+  and current plan access before starting an attempt or returning a score.
+- Multiple-choice and numeric answers are marked on the server. Non-empty written responses
+  remain pending until an administrator applies the rubric in the admin dashboard.
+- Deploy the updated Firestore rules and indexes with `firebase deploy --only firestore:rules,firestore:indexes`.
+- The exam API is served by this Express process. Set `window.__ENV__.API_BASE_URL` in `env.js`
+  to its HTTPS origin when it is hosted separately; leave it blank when requests are routed
+  through a same-origin reverse proxy. The website's `connect-src` CSP must permit that origin.
+- AI marking is intentionally not enabled. It would require a separately secured provider key,
+  privacy review, cost controls, and teacher verification; objective scoring and rubric-based
+  teacher review are the supported marking methods.

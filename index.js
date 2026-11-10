@@ -151,7 +151,7 @@ app.post('/api/paystack/webhook', express.raw({ type: '*/*' }), async (req, res)
     }, { merge: true });
 
     // SECURITY: Do NOT grant admin custom claims from the Paystack webhook.
-    // Admin privileges must be controlled explicitly via server/setAdminClaim.js for known admin UID(s).
+    // Admin privileges must be controlled explicitly via server/assignAdminClaim.js for known admin UID(s).
 
     await paymentRefDoc.set({
       reference,
@@ -175,4 +175,3 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Webhook server listening on port ${PORT}`);
 });
-

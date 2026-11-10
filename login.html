@@ -18,6 +18,8 @@
   <meta name="twitter:title" content="Login - KTM Academy" />
   <meta name="twitter:description" content="Login to access your KTM Academy Grade 10–12 Mathematical Literacy lessons and past papers." />
   <link rel="stylesheet" href="assets/css/ktm-design-system.css">
+  <script src="icons.js" defer></script>
+  <script src="theme.js" defer></script>
 
   <!-- Favicon + mobile icons -->
 <link rel="icon" type="image/png" sizes="32x32" href="assets/logo%20-%20blu-ish.png">
@@ -27,8 +29,7 @@
   <script type="module" src="navbar.js" defer></script>
 
   <!-- CSP: block inline scripts, allow app scripts + Paystack -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.gstatic.com https://js.paystack.co; img-src 'self' data:; connect-src 'self' https://firestore.googleapis.com https://*.googleapis.com https://*.gstatic.com; font-src 'self' data:;"/>
-  <link rel="stylesheet" href="assets/vendor/font-awesome/all.min.css">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.gstatic.com https://www.google.com/recaptcha/ https://www.recaptcha.net/recaptcha/ https://js.paystack.co 'sha256-vvt4KWwuNr51XfE5m+hzeNEGhiOfZzG97ccfqGsPwvE='; img-src 'self' data:; connect-src 'self' https://firestore.googleapis.com https://*.googleapis.com https://*.gstatic.com https://www.google.com https://www.recaptcha.net; frame-src 'self' https://www.google.com/recaptcha/ https://recaptcha.google.com/recaptcha/ https://www.recaptcha.net/recaptcha/; font-src 'self' data:;"/>
 </head>
 <body>
   <nav class="navbar">
@@ -52,7 +53,7 @@
             <li><a href="index.html#home">Home</a></li>
             <li><a href="plans.html">Plans</a></li>
             <li><a href="contact.html">Contact</a></li>
-            <li><a href="dashboard.html" id="dashboardLink" class="hidden">Dashboard</a></li>
+            <li><a href="dashboard.html" id="dashboardLinkMobile" class="hidden">Dashboard</a></li>
           </ul>
         </div>
       </div>

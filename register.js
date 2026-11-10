@@ -1,5 +1,5 @@
 import { auth, db } from './firebase.js';
-import { createUserWithEmailAndPassword, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js';
+import { createUserWithEmailAndPassword, getIdTokenResult, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js';
 import { doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js';
 import { showAlert, showLoading, hideLoading } from './utils.js';
 
@@ -13,6 +13,10 @@ const confirmPasswordEl = getEl('regConfirmPassword');
 const gradeEl = getEl('regGrade');
 const privacyConsentEl = getEl('privacyConsent');
 const submitBtn = getEl('registerSubmit');
+
+let registrationInProgress = false;
+let pendingProfile = null;
+let pendingUid = null;
 
 function setProcessing(isProcessing) {
   if (submitBtn) submitBtn.disabled = isProcessing;
@@ -94,11 +98,13 @@ async function handleRegister(e) {
 
   try {
     setProcessing(true);
+    registrationInProgress = true;
+    if (pendingProfile && auth.currentUser?.uid !== pendingUid) {
+      showAlert('Sign in to the account that was just created to finish setting up its profile.', 'error');
+      return;
+    }
 
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const uid = userCredential.user.uid;
-
-    await setDoc(doc(db, 'users', uid), {
+    const profile = pendingProfile || {
       name,
       email,
       grade,
@@ -108,16 +114,29 @@ async function handleRegister(e) {
       privacyConsentAccepted,
       privacyConsentAcceptedAt: serverTimestamp(),
       createdAt: serverTimestamp()
-    });
+    };
+
+    if (!pendingProfile) {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      pendingUid = userCredential.user.uid;
+      pendingProfile = profile;
+    }
+
+    await setDoc(doc(db, 'users', pendingUid), pendingProfile);
+    pendingProfile = null;
+    pendingUid = null;
 
     showAlert('Bronze account created!', 'success');
 
-    // Redirect to login
-    window.location.href = 'login.html';
+    window.location.href = 'dashboard.html';
   } catch (err) {
-    const msg = err?.message || 'Registration failed. Please try again.';
+    const profilePending = Boolean(pendingProfile && auth.currentUser?.uid === pendingUid);
+    const msg = profilePending
+      ? 'Your account was created, but its profile could not be saved. Please submit again to retry profile setup.'
+      : (err?.message || 'Registration failed. Please try again.');
     showAlert(msg, 'error');
   } finally {
+    registrationInProgress = Boolean(pendingProfile);
     setProcessing(false);
   }
 }
@@ -130,13 +149,19 @@ function init() {
 
   registerForm.addEventListener('submit', handleRegister);
 
-  // If already logged in, redirect away from register page
-  if (['login.html', 'register.html'].includes(window.location.pathname.split('/').pop())) {
-    onAuthStateChanged(auth, (user) => {
-      if (!user) return;
-      window.location.href = 'dashboard.html';
-    });
-  }
+  onAuthStateChanged(auth, async (user) => {
+    if (user && !registrationInProgress) {
+      try {
+        const tokenResult = await getIdTokenResult(user, true);
+        if (auth.currentUser?.uid !== user.uid) return;
+        window.location.href = tokenResult.claims.admin === true ? 'admin.html' : 'dashboard.html';
+      } catch (error) {
+        if (auth.currentUser?.uid !== user.uid) return;
+        console.error('[MathWithMDU] Could not verify signed-in user role:', error);
+        showAlert('Unable to verify your account. Check your connection and try again.', 'error');
+      }
+    }
+  });
 }
 
 if (document.readyState === 'loading') {

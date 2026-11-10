@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "test": "node --test billing.test.js"
+    "test": "node --test billing.test.js examScoring.test.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

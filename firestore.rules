@@ -90,6 +90,29 @@ service cloud.firestore {
       );
       allow write: if isAdmin();
     }
+
+    match /exams/{examId} {
+      allow read: if isAdmin() || (
+        request.auth != null
+        && resource.data.published == true
+        && (
+          resource.data.isFree == true
+          || canReadPlanContent(resource.data.plan)
+        )
+      );
+      allow write: if isAdmin();
+    }
+
+    // Grading keys are only available to administrators and the trusted server.
+    match /examAnswerKeys/{examId} {
+      allow read, write: if isAdmin();
+    }
+
+    match /users/{userId}/examAttempts/{attemptId} {
+      allow read: if isAdmin() || (
+        request.auth != null && request.auth.uid == userId
+      );
+      allow write: if false;
+    }
   }
 }
-

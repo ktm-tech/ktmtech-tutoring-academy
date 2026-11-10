@@ -13,6 +13,10 @@
   // disabled until this is filled in.
   window.__ENV__.PAYSTACK_KEY = window.__ENV__.PAYSTACK_KEY || '';
 
+  // Optional HTTPS origin for the examination API. Leave blank when it shares
+  // the website origin (for example, behind a same-origin reverse proxy).
+  window.__ENV__.API_BASE_URL = window.__ENV__.API_BASE_URL || '';
+
   // Google reCAPTCHA v3 site key (login + registration).
   window.__ENV__.recaptchaSiteKey =
     window.__ENV__.recaptchaSiteKey || '6LdvgSMtAAAAABQbM0SYGPbaowC7CUzI6Wbb6ICn';
