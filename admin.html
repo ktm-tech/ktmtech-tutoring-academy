@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Administration - KTM Academy</title>
+  <meta name="description" content="Admin panel for KTM Academy: upload lessons, past papers, and post announcements." />
+  <meta name="robots" content="noindex,follow" />
+  <link rel="canonical" href="admin.html" />
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Administration - KTM Academy" />
+  <meta property="og:description" content="Manage published learning materials and announcements for KTM Academy." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="KTM Academy" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Administration - KTM Academy" />
+  <meta name="twitter:description" content="Manage published learning materials and announcements for KTM Academy." />
+  <link rel="stylesheet" href="assets/css/ktm-design-system.css">
+
+  <!-- Favicon + mobile icons -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logo%20-%20blu-ish.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/logo%20-%20blu-ish.png">
+
+
+  <!-- IMPORTANT: module first, UI later -->
+  <script type="module" src="admin.js" defer></script>
+
+  <script type="module" src="navbar.js" defer></script>
+
+  <link rel="stylesheet" href="assets/vendor/font-awesome/all.min.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <a href="index.html" class="logo-link" aria-label="Go to home">
+<img class="logo-img" src="assets/logo%20-%20blu-ish.png" alt=""/>
+        <span class="brand-name">KTM Academy</span>
+      </a>
+      <span class="brand-name">Admin</span>
+    </div>
+
+    <div class="nav-wrapper">
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="dashboard.html">Student Dashboard</a></li>
+      </ul>
+      <button class="mobile-nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+        <i class="fa-solid fa-bars" aria-hidden="true"></i>
+      </button>
+
+      <div class="mobile-menu">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="dashboard.html">Student Dashboard</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+
+    <div class="menu-overlay"></div>
+
+    <div class="auth-btns">
+      <span id="adminInfo"></span>
+      <button id="logoutBtn" class="btn btn-secondary hidden">Logout</button>
+
+
+    </div>
+
+  </div>
+</nav>
+
+<!-- =========================
+     AUTH GATE (SAFER FLOW)
+     ========================= -->
+<div class="admin-layout">
+  <aside class="admin-navigation" aria-label="Administration navigation">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:.5rem;">
+      <h2>Administration</h2>
+      <button id="adminMenuToggle" class="btn btn-secondary mobile-sidebar-toggle" type="button" aria-expanded="false">Menu</button>
+    </div>
+    <nav>
+      <a href="#adminOverview">Overview</a>
+      <a href="#studentManagement">Students</a>
+      <a href="#subscriptionManagement">Subscriptions</a>
+      <a href="#lessonManagement">Learning centre</a>
+      <a href="#questionManagement">Question bank</a>
+      <a href="#examinationManagement">Examinations</a>
+      <a href="#announcementManagement">Notifications</a>
+      <a href="#reportManagement">Reports</a>
+      <a href="#settingsManagement">Settings</a>
+    </nav>
+  </aside>
+  <div class="admin-content">
+
+
+  <div id="authSection" class="card">
+    <span class="eyebrow">KTM Academy</span>
+    <h1>Administrator sign in</h1>
+    <p>Login with admin email to access</p>
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="adminEmail">Admin Email</label>
+        <input type="email" id="adminEmail" placeholder="Admin Email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" placeholder="Password" required />
+      </div>
+
+      <button id="adminLogin" class="btn btn-primary" type="button">Admin Login</button>
+    </form>
+
+    <div id="loginError" class="alert alert-error hidden" role="alert" aria-live="polite"></div>
+  </div>
+
+  <div id="adminSection" class="hidden">
+    <section id="adminOverview" class="card">
+      <span class="eyebrow">Administration</span>
+      <h1>Workspace overview</h1>
+      <p class="muted">Manage published learning materials and announcements.</p>
+      <div class="stats-grid">
+        <article class="stat-card"><span>Students</span><strong>—</strong><small class="muted">Student management preview</small></article>
+        <article class="stat-card"><span>Subscriptions</span><strong>—</strong><small class="muted">Plan status preview</small></article>
+        <article class="stat-card"><span>Learning resources</span><strong>—</strong><small class="muted">Published content preview</small></article>
+      </div>
+      <span class="demo-note">Summary metrics are not connected</span>
+    </section>
+
+    <section id="studentManagement" class="card">
+      <h2>Student management <span class="demo-note">Coming soon</span></h2>
+      <p class="muted">Student directory, search and status management are not connected in this design phase.</p>
+      <div class="dashboard-grid" style="margin-bottom:1rem;">
+        <input type="search" aria-label="Search students (preview only)" placeholder="Search students" disabled>
+        <select aria-label="Filter by grade (preview only)" disabled><option>All grades</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select>
+        <select aria-label="Filter by plan (preview only)" disabled><option>All plans</option><option>Bronze</option><option>Gold</option><option>Premium</option></select>
+      </div>
+      <div style="overflow-x:auto;">
+        <table class="data-table">
+          <thead><tr><th>Student</th><th>Grade</th><th>Plan</th><th>Status</th></tr></thead>
+          <tbody><tr><td colspan="4">Student records will appear here when student management is implemented.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="subscriptionManagement" class="card">
+      <h2>Subscription plans <span class="demo-note">Preview</span></h2>
+      <p class="muted">The current public plans are Bronze, Gold and Premium. Subscription administration is not connected here.</p>
+      <div class="grade-grid">
+        <article class="feature-card"><h3>Bronze</h3><p>Free entry access</p></article>
+        <article class="feature-card"><h3>Gold</h3><p>R250 monthly</p></article>
+        <article class="feature-card"><h3>Premium</h3><p>R400 monthly</p></article>
+      </div>
+    </section>
+
+    <!-- ================= LESSONS ================= -->
+    <div id="lessonManagement" class="card">
+      <h2>Upload Lesson</h2>
+      <form id="lessonForm">
+        <div class="form-group">
+          <label for="lessonTitle">Title</label>
+          <input type="text" id="lessonTitle" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lessonGrade">Grade</label>
+          <select id="lessonGrade" required>
+            <option value="10">Grade 10</option>
+            <option value="11">Grade 11</option>
+            <option value="12">Grade 12</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="lessonTerm">Term</label>
+          <input type="number" id="lessonTerm" min="1" max="4" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lessonWeek">Week</label>
+          <input type="number" id="lessonWeek" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lessonTopic">Topic</label>
+          <input type="text" id="lessonTopic" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lessonDesc">Description</label>
+          <textarea id="lessonDesc" rows="3" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="lessonURL">File URL</label>
+          <input type="url" id="lessonURL" required />
+        </div>
+
+        <div class="form-group">
+          <label for="lessonAccess">Access</label>
+          <select id="lessonAccess" required>
+            <option value="free">Free (Bronze)</option>
+            <option value="gold">Gold and Premium</option>
+            <option value="platinum_star">Premium only</option>
+          </select>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Upload Lesson</button>
+      </form>
+    </div>
+
+    <!-- ================= PAPERS ================= -->
+    <div id="examinationManagement" class="card">
+      <h2>Upload Past Paper</h2>
+      <form id="paperForm">
+        <div class="form-group">
+          <label for="paperTitle">Title</label>
+          <input type="text" id="paperTitle" required />
+        </div>
+
+        <div class="form-group">
+          <label for="paperGrade">Grade</label>
+          <select id="paperGrade" required>
+            <option value="10">Grade 10</option>
+            <option value="11">Grade 11</option>
+            <option value="12">Grade 12</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="paperTopic">Topic</label>
+          <input type="text" id="paperTopic" required />
+        </div>
+
+        <div class="form-group">
+          <label for="paperURL">File URL</label>
+          <input type="url" id="paperURL" required />
+        </div>
+
+        <div class="form-group">
+          <label for="paperAccess">Access</label>
+          <select id="paperAccess" required>
+            <option value="free">Free (Bronze)</option>
+            <option value="gold">Gold and Premium</option>
+            <option value="platinum_star">Premium only</option>
+          </select>
+        </div>
+
+
+        <button type="submit" class="btn btn-primary">Upload Paper</button>
+      </form>
+    </div>
+
+    <!-- ================= FILE UPLOAD ================= -->
+    <div id="questionManagement" class="card">
+      <h2>Question bank and examinations <span class="demo-note">Preview</span></h2>
+      <p class="muted">Online question authoring and examination workflows are not connected. Continue using the current past-paper upload form below.</p>
+      <article class="feature-card"><strong>Example question preview</strong><p>Question content and answer options will appear here when the question bank is implemented.</p><span class="demo-note">Preview content only</span></article>
+    </div>
+
+    <div class="card">
+      <h2><i class="fa-solid fa-folder-open mdu-icon"></i> File Upload</h2>
+      <form id="uploadForm">
+        <div class="form-group">
+          <label for="fileTitle">File Title</label>
+          <input type="text" id="fileTitle" required />
+        </div>
+
+        <div class="form-group">
+          <label for="fileInput">Select File</label>
+          <input type="file" id="fileInput" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Upload File</button>
+      </form>
+    </div>
+
+    <!-- ================= ANNOUNCEMENTS ================= -->
+    <div id="announcementManagement" class="card">
+      <h2>Post Announcement</h2>
+      <p class="muted">Send an announcement to every student or target a specific grade. Students only see announcements intended for their grade.</p>
+      <form id="announceForm">
+        <div class="form-group">
+          <label for="announceTitle">Announcement title</label>
+          <input type="text" id="announceTitle" maxlength="100" placeholder="e.g. Grade 10 revision material available" required />
+        </div>
+        <div class="form-group">
+          <label for="announceGrade">Audience</label>
+          <select id="announceGrade" required>
+            <option value="all">All students</option>
+            <option value="10">Grade 10</option>
+            <option value="11">Grade 11</option>
+            <option value="12">Grade 12</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="announceMsg">Message</label>
+          <textarea id="announceMsg" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="announceLink">Meeting Link</label>
+          <input type="url" id="announceLink" />
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" id="announceImportant" />
+            Important
+          </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Send announcement</button>
+      </form>
+    </div>
+
+    <section id="reportManagement" class="card">
+      <h2>Reports <span class="demo-note">Coming soon</span></h2>
+      <p class="muted">Reporting and student performance summaries are not connected in this design phase.</p>
+      <div class="progress-track" aria-label="Report chart preview"><span style="width:0"></span></div>
+    </section>
+    <section id="settingsManagement" class="card">
+      <h2>Settings <span class="demo-note">Preview</span></h2>
+      <p class="muted">Existing account and service configuration remains unchanged.</p>
+    </section>
+  </div>
+  </div>
+</div>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="container">
+    <a href="https://wa.me/27637919877" class="contact-btn">Admin Support</a>
+
+    <div class="mdu-footer-legal-links">
+      <a href="terms.html" class="contact-btn contact-btn-legal">Terms</a>
+      <a href="privacy.html" class="contact-btn contact-btn-legal">Privacy</a>
+      <a href="popia.html" class="contact-btn contact-btn-legal">POPIA</a>
+    </div>
+
+  </div>
+</footer>
+
+<script type="module" src="navigation-drawers.js" defer></script>
+</body>
+</html>

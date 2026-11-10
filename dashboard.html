@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning dashboard - KTM Academy</title>
+  <meta name="description" content="Student dashboard for KTM Academy: access lessons, past papers, and your announcements based on your plan." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="dashboard.html" />
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Learning dashboard - KTM Academy" />
+  <meta property="og:description" content="Access lessons, past papers, and announcements in your KTM Academy student dashboard." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="KTM Academy" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Learning dashboard - KTM Academy" />
+  <meta name="twitter:description" content="Access lessons, past papers, and announcements in your KTM Academy student dashboard." />
+  <link rel="stylesheet" href="assets/css/ktm-design-system.css">
+
+  <!-- Favicon + mobile icons -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logo%20-%20blu-ish.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/logo%20-%20blu-ish.png">
+
+  <script type="module" src="dashboard.js" defer></script>
+  <script type="module" src="navbar.js" defer></script>
+
+  <link rel="stylesheet" href="assets/vendor/font-awesome/all.min.css">
+</head>
+<body class="dashboard-page">
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo-link" aria-label="Go to home">
+<img class="logo-img" src="assets/logo%20-%20blu-ish.png" alt=""/>
+        <span class="brand-name">KTM Academy</span>
+      </a>
+      <div class="nav-wrapper">
+        <ul class="nav-links" id="navLinks">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="plans.html">Plans</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="dashboard.html" class="active-link">Dashboard</a></li>
+        </ul>
+        <button class="mobile-nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+        <div class="mobile-menu">
+          <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="plans.html">Plans</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="menu-overlay"></div>
+
+      <div class="auth-btns">
+        <a href="index.html?auth=logout" class="btn btn-primary" style="white-space:nowrap;">Logout</a>
+      </div>
+
+    </div>
+  </nav>
+
+  <main class="dashboard-shell">
+    <aside class="dashboard-sidebar" aria-label="Student navigation">
+      <h2>Learning space</h2>
+      <nav>
+        <a href="#overview" class="is-active"><i class="fa-solid fa-house" aria-hidden="true"></i> Overview</a>
+        <a href="#learning-centre"><i class="fa-solid fa-book-open" aria-hidden="true"></i> Learning centre</a>
+        <a href="#subjects"><i class="fa-solid fa-book" aria-hidden="true"></i> My subjects</a>
+        <a href="#lessons"><i class="fa-solid fa-file-lines" aria-hidden="true"></i> Study materials</a>
+        <a href="#practice"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Practice exercises</a>
+        <a href="#examinations"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i> Mock examinations</a>
+        <a href="#question-bank"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Question bank</a>
+        <a href="#progress"><i class="fa-solid fa-chart-line" aria-hidden="true"></i> My progress</a>
+        <a href="#bookmarks"><i class="fa-regular fa-bookmark" aria-hidden="true"></i> Bookmarks</a>
+        <a href="#notifications"><i class="fa-regular fa-bell" aria-hidden="true"></i> Notifications</a>
+        <a href="#calendar"><i class="fa-regular fa-calendar" aria-hidden="true"></i> Academic calendar</a>
+        <a href="#account"><i class="fa-regular fa-user" aria-hidden="true"></i> Account settings</a>
+      </nav>
+      <p class="muted" style="margin:.85rem .65rem 0;font-size:.75rem;">Some areas are visual previews only.</p>
+    </aside>
+
+    <div class="dashboard-main">
+      <section id="overview">
+        <div class="dashboard-title-row">
+          <div>
+            <span class="eyebrow">Student dashboard</span>
+            <h1 id="userInfo">Welcome to your learning space</h1>
+            <p>Pick up where you left off or explore your available study resources.</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;">
+            <button id="dashboardMenuToggle" class="btn btn-secondary mobile-sidebar-toggle" type="button" aria-expanded="false">Menu</button>
+            <span id="planBadge" class="demo-note">Current plan: TRIAL</span>
+          </div>
+        </div>
+
+        <div class="stats-grid" aria-label="Demonstration progress overview">
+          <article class="stat-card"><span>Grade</span><strong>—</strong><small class="muted">Your registered grade</small></article>
+          <article class="stat-card"><span>Learning progress</span><strong>—</strong><small class="muted">Progress tracking preview</small></article>
+          <article class="stat-card"><span>Study plan</span><strong style="font-size:1.2rem;">Your plan</strong><small class="muted">See the badge above</small></article>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <article class="section-card">
+          <h2>Continue learning</h2>
+          <p class="muted">Your published lesson resources appear below.</p>
+          <a class="btn btn-primary" href="#lessons">Browse lessons</a>
+        </article>
+        <article class="section-card" id="progress">
+          <h2>My progress <span class="demo-note">Preview</span></h2>
+          <p class="muted">Progress charts and completed lesson tracking are not connected yet.</p>
+          <div class="progress-track" aria-label="Progress preview"><span style="width:0"></span></div>
+        </article>
+      </section>
+
+      <section class="section-card" id="learning-centre">
+        <h2>Learning centre <span class="demo-note">Mathematical Literacy</span></h2>
+        <p class="muted">Browse available materials by grade, term and topic. Dedicated subject and topic filters are a later-phase feature.</p>
+      </section>
+
+      <section class="section-card" id="subjects">
+        <h2>My subjects</h2>
+        <article class="feature-card"><h3>Mathematical Literacy</h3><p>Learning resources for the grade on your account are listed below.</p></article>
+      </section>
+
+      <section class="section-card" id="lessons">
+        <h2>Lessons and study materials</h2>
+        <div id="lessonsList" aria-live="polite"></div>
+      </section>
+
+      <section class="section-card" id="practice">
+        <h2>Practice exercises <span class="demo-note">Coming soon</span></h2>
+        <p class="muted">Topic-based interactive exercises are planned for a future release. Use your published lesson materials and past papers to practise in the meantime.</p>
+      </section>
+
+      <section class="section-card" id="examinations">
+        <h2>Mock examinations <span class="demo-note">Coming soon</span></h2>
+        <p class="muted">Timed online mock examinations, automatic marking and worked solutions are planned for a future release. In the meantime, use the published past papers below to practise.</p>
+      </section>
+
+      <section class="section-card" id="question-bank">
+        <h2>Question bank <span class="demo-note">Coming soon</span></h2>
+        <div class="empty-state"><p>Question-bank content will appear here when the feature is implemented.</p></div>
+      </section>
+
+      <section class="section-card" id="papers">
+        <h2>Practice papers</h2>
+        <div id="papersList" aria-live="polite"></div>
+      </section>
+
+      <section class="section-card" id="bookmarks">
+        <h2>Bookmarks <span class="demo-note">Coming soon</span></h2>
+        <div class="empty-state"><p>Save and revisit resources when bookmarks are implemented.</p></div>
+      </section>
+
+      <section class="section-card" id="notifications">
+        <h2>Announcements and reminders</h2>
+        <div id="announcementsList" aria-live="polite"></div>
+      </section>
+      <section class="section-card" id="calendar">
+        <h2>Academic calendar <span class="demo-note">Preview</span></h2>
+        <div class="empty-state"><p>No calendar items are available in this preview.</p></div>
+      </section>
+      <section class="section-card" id="account">
+        <h2>Account settings <span class="demo-note">Preview</span></h2>
+        <p class="muted">Account management remains available through the existing sign-in and support channels.</p>
+      </section>
+    </div>
+  </main>
+
+  <div id="loading" class="loading hidden" aria-hidden="true">
+    <div class="spinner"></div>
+  </div>
+
+  <div id="alertContainer" aria-live="polite" aria-atomic="true"></div>
+  <script type="module" src="navigation-drawers.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - KTM Academy</title>
+  <meta name="description" content="Login to access your KTM Academy Grade 10–12 Mathematical Literacy lessons, past papers, and student dashboard." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="login.html" />
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Login - KTM Academy" />
+  <meta property="og:description" content="Login to access your KTM Academy Grade 10–12 Mathematical Literacy lessons and past papers." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="KTM Academy" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Login - KTM Academy" />
+  <meta name="twitter:description" content="Login to access your KTM Academy Grade 10–12 Mathematical Literacy lessons and past papers." />
+  <link rel="stylesheet" href="assets/css/ktm-design-system.css">
+
+  <!-- Favicon + mobile icons -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logo%20-%20blu-ish.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/logo%20-%20blu-ish.png">
+
+  <script type="module" src="login.js" defer></script>
+  <script type="module" src="navbar.js" defer></script>
+
+  <!-- CSP: block inline scripts, allow app scripts + Paystack -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.gstatic.com https://js.paystack.co; img-src 'self' data:; connect-src 'self' https://firestore.googleapis.com https://*.googleapis.com https://*.gstatic.com; font-src 'self' data:;"/>
+  <link rel="stylesheet" href="assets/vendor/font-awesome/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+          <a href="index.html" class="logo-link" aria-label="Go to home">
+<img class="logo-img" src="assets/logo%20-%20blu-ish.png" alt=""/>
+            <span class="brand-name">KTM Academy</span>
+          </a>
+      <div class="nav-wrapper">
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="plans.html">Plans</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="dashboard.html" id="dashboardLink" class="hidden">Dashboard</a></li>
+        </ul>
+        <button class="mobile-nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+        <div class="mobile-menu">
+          <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="plans.html">Plans</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="dashboard.html" id="dashboardLink" class="hidden">Dashboard</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="menu-overlay"></div>
+
+      <div class="auth-btns">
+        <button class="btn btn-secondary" id="loginBtn" type="button">Login</button>
+        <button class="btn btn-primary" id="registerBtn" type="button">Register</button>
+        <button class="hidden btn btn-secondary" id="logoutBtn" type="button">Logout</button>
+
+      </div>
+
+    </div>
+  </nav>
+
+<main class="mdu-page-top" style="min-height: calc(100vh - 72px);">
+    <section class="hero" style="padding: 120px 0 80px; text-align:center;">
+      <div class="container" style="max-width: 720px;">
+        <div class="card">
+          <h1 class="hero-headline" style="margin-bottom: 1rem; font-size: clamp(2.5rem, 5vw, 3.5rem);">Login</h1>
+          <p style="color: rgba(255,255,255,0.9); margin: 0 0 1.8rem;">
+            Access your dashboard and continue your learning.
+          </p>
+
+
+          <form id="loginForm" novalidate aria-describedby="loginHelp">
+            <div class="form-group">
+              <label for="loginEmail">Email</label>
+              <input type="email" id="loginEmail" name="email" required autocomplete="email" aria-required="true" inputmode="email" />
+            </div>
+
+            <div class="form-group">
+              <label for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" name="password" required autocomplete="current-password" aria-required="true" />
+            </div>
+
+            <button id="loginSubmit" type="submit" class="btn btn-primary" style="width:100%; max-width: 320px;">
+              Login
+            </button>
+
+            <div id="loginHelp" style="margin-top: 1rem; font-size: 0.95rem; opacity: 0.9;">
+              <div style="margin-bottom:0.45rem;">
+                <span>Don’t have an account?</span>
+                <a href="register.html" style="color:#64d8ff; text-decoration:none; font-weight:700;">Register</a>
+              </div>
+              <div>
+                <a href="admin.html" style="color:#64d8ff; text-decoration:none; font-weight:700;">Admin Login</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Loading -->
+  <div id="loading" class="loading hidden" aria-hidden="true">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- Alerts -->
+  <div id="alertContainer" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Cookie Consent Banner (UI + local record only) -->
+  <div id="cookieConsentBanner" class="cookie-banner hidden" role="dialog" aria-live="polite" aria-label="Cookie consent">
+    <div class="cookie-banner-content">
+      <div>
+        <strong>Cookie notice</strong>
+        <p style="margin-top:0.4rem; opacity:0.9;">
+          We use essential cookies for the website to work. We may also use analytics cookies.
+          Choose your preference.
+        </p>
+      </div>
+      <div class="cookie-banner-actions">
+        <button id="cookieEssentialBtn" class="btn btn-secondary" type="button">Essential only</button>
+        <button id="cookieAcceptBtn" class="btn btn-primary" type="button">Accept analytics</button>
+      </div>
+      <p style="margin-top:0.8rem; font-size:0.9rem; opacity:0.85;">
+        <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
+        • <a href="popia.html" target="_blank" rel="noopener noreferrer">POPIA</a>
+      </p>
+      <noscript>
+        <p style="margin-top:0.8rem; font-size:0.85rem; opacity:0.8;">Cookie settings may not work without JavaScript. Please review your browser settings.</p>
+      </noscript>
+    </div>
+  </div>
+
+  <script src="cookie-consent.js" defer></script>
+  <script src="auth-redirect.js" defer></script>
+</body>
+</html>

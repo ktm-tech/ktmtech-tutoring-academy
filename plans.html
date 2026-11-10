@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study plans - KTM Academy</title>
+  <meta name="description" content="Choose the right plan for your Grade 10–12 Mathematical Literacy learning: Bronze, Gold, or Premium." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="plans.html" />
+  <!-- OpenGraph -->
+  <meta property="og:title" content="Study plans - KTM Academy" />
+  <meta property="og:description" content="Compare Bronze, Gold and Premium learning plans for Grade 10–12 Mathematical Literacy." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="en_US" />
+  <meta property="og:site_name" content="KTM Academy" />
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Study plans - KTM Academy" />
+  <meta name="twitter:description" content="Compare Bronze, Gold and Premium learning plans for Grade 10–12 Mathematical Literacy." />
+  <link rel="stylesheet" href="assets/css/ktm-design-system.css">
+
+  <!-- Favicon + mobile icons -->
+<link rel="icon" type="image/png" sizes="32x32" href="assets/logo%20-%20blu-ish.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/logo%20-%20blu-ish.png">
+
+  <script src="https://js.paystack.co/v1/inline.js" defer></script>
+
+  <!-- CSP: block inline scripts, allow app scripts + Paystack -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; style-src 'self' 'unsafe-inline'; script-src 'self' https://www.gstatic.com https://js.paystack.co; img-src 'self' data:; connect-src 'self' https://firestore.googleapis.com https://*.googleapis.com https://*.gstatic.com; font-src 'self' data:;"/>
+
+  <!-- Both navbar.js and plans.js use ES module imports -->
+  <script type="module" src="navbar.js" defer></script>
+  <script type="module" src="plans.js" defer></script>
+
+  <link rel="stylesheet" href="assets/vendor/font-awesome/all.min.css">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+<a href="index.html" class="logo-link" aria-label="Go to home"><img class="logo-img" src="assets/logo%20-%20blu-ish.png" alt=""><span class="brand-name">KTM Academy</span></a>
+
+      <div class="nav-wrapper">
+        <ul class="nav-links">
+          <li><a href="index.html#home">Home</a></li>
+          <li><a href="dashboard.html" id="dashboardLink" class="hidden">Dashboard</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <button class="mobile-nav-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false">
+          <i class="fa-solid fa-bars" aria-hidden="true"></i>
+        </button>
+
+        <div class="mobile-menu">
+          <ul class="nav-links">
+            <li><a href="index.html#home">Home</a></li>
+            <li><a href="dashboard.html" id="dashboardLink" class="hidden">Dashboard</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="menu-overlay"></div>
+
+      <div class="auth-btns">
+        <button id="loginBtn" class="btn btn-secondary" type="button">Login</button>
+        <button id="registerBtn" class="btn btn-primary" type="button">Register</button>
+        <button id="logoutBtn" class="hidden btn btn-secondary" type="button">Logout</button>
+
+
+
+      </div>
+
+    </div>
+  </nav>
+
+  <div class="container mdu-page-top">
+    <div class="card" style="text-align: center;">
+      <h1 style="color: rgba(255,255,255,0.95);">Choose Your Plan</h1>
+      <p style="opacity: 0.9;">Start with free trial, upgrade for full access</p>
+    </div>
+
+
+    <section class="section" aria-labelledby="plansHeading" style="padding-top:1.5rem;">
+      <div class="section-heading">
+        <span class="eyebrow">Simple learning plans</span>
+        <h2 id="plansHeading">Choose the support that fits your learning</h2>
+        <p>Every plan is designed to help you build confidence. Start with Bronze and upgrade when you need more learning resources.</p>
+      </div>
+      <div class="card-grid public-plan-grid">
+        <article class="plan-card">
+          <span class="eyebrow">Get started</span>
+          <h3>Bronze</h3>
+          <strong style="color:#15803d;">FREE</strong>
+          <p class="muted">A starting point for exploring KTM Academy.</p>
+          <ul>
+            <li>1 available lesson</li>
+            <li>1 available practice paper</li>
+            <li>Access to grade announcements</li>
+            <li>Student learning dashboard</li>
+          </ul>
+          <button id="trialBtn" class="btn btn-secondary" type="button">Start free access</button>
+        </article>
+        <article class="plan-card popular">
+          <span class="eyebrow">More room to practise</span>
+          <h3>Gold</h3>
+          <strong>R250 <small>/ month</small></strong>
+          <p class="muted">For students who want a broader collection of resources.</p>
+          <ul>
+            <li>Full published lesson library</li>
+            <li>Published past papers</li>
+            <li>Grade announcements and reminders</li>
+            <li>Learning resources for your registered grade</li>
+          </ul>
+          <button class="btn btn-primary payBtn" data-plan="gold" data-amount="25000" type="button">Choose Gold</button>
+        </article>
+        <article class="plan-card">
+          <span class="eyebrow">Most complete support</span>
+          <h3>Premium</h3>
+          <strong>R400 <small>/ month</small></strong>
+          <p class="muted">For students who want the most comprehensive available support.</p>
+          <ul>
+            <li>Everything included in Gold</li>
+            <li>Priority academic support</li>
+            <li>Additional revision resources as published</li>
+            <li>Early access to new learning features</li>
+          </ul>
+          <button class="btn btn-primary payBtn" data-plan="premium" data-amount="40000" type="button">Choose Premium</button>
+        </article>
+      </div>
+      <p class="muted" style="max-width:850px;margin:1.25rem auto 0;font-size:.85rem;">Online mock examinations, automated marking, personalised recommendations and advanced progress analytics are planned features and are not represented as active benefits until they are released.</p>
+    </section>
+    <div class="card" style="margin-top: 2rem; padding: 1.75rem 2rem;">
+      <div class="alert info" style="margin-bottom:0;">
+
+      <strong>Note:</strong> After payment, contact WhatsApp to activate plan.
+      <p style="margin-top:0.6rem; opacity:0.9; font-size:0.95rem;">
+        <strong>Payments:</strong> Payments are processed by Paystack. Card/bank details are not stored on our side.
+        By continuing, you agree to our <a href="terms.html" target="_blank" rel="noopener noreferrer">Terms &amp; Conditions</a>
+        and <a href="privacy.html" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+      </p>
+    </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+
+    <div class="container">
+      <a href="https://wa.me/27637919877" class="contact-btn" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-comments mdu-icon" aria-hidden="true"></i>Contact Support: 0637919877
+      </a>
+
+      <div style="margin-top: 1.5rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="terms.html" class="contact-btn" style="background: rgba(100,200,255,0.15); border: 1px solid rgba(100,200,255,0.4); padding: 0.8rem 1.2rem; font-size:0.95rem;">Terms &amp; Conditions</a>
+        <a href="privacy.html" class="contact-btn" style="background: rgba(100,200,255,0.15); border: 1px solid rgba(100,200,255,0.4); padding: 0.8rem 1.2rem; font-size:0.95rem;">Privacy Policy</a>
+        <a href="popia.html" class="contact-btn" style="background: rgba(100,200,255,0.15); border: 1px solid rgba(100,200,255,0.4); padding: 0.8rem 1.2rem; font-size:0.95rem;">POPIA</a>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="plans-auth-redirect.js" defer></script>
+</body>
+</html>
